@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Terra 1.0</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static "css/bundle.css" %}" />
+        {% load static %}
+        <script type="text/javascript" src="{% static "js/require.js" %}"></script>    </head>
+    <body>
+        <header>
+
+        </header>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-offset-4 col-md-4">
+                  <!--  <img src="images/ifro-horizontal.png" class="img-responsive"> -->
+                    <h2 class="text-center">Terra 1.0</h2>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <script>localStorage.clear();</script>
+                <div class="row">
+                    <div class="col-md-offset-2 col-md-4">
+                        <form id="FrmLogin" method="post" class="jumbotron" onsubmit="event.preventDefault(); location.href='admin.html'">
+                            <p class="text-danger"></p>
+                            <div class="input-group-lg">
+                                <label for="login" data-i18n="admin:label.email">E-mail</label>
+                                <input type="text" class="form-control" name="email" id="email" required="required" data-i18n="[placeholder]admin:label.email_pla">
+                            </div>
+                            <div class="input-group-lg">
+                                <label for="login" data-i18n="admin:label.password">Senha</label>
+                                <input type="password" class="form-control" name="password" id="password" required="required" data-i18n="[placeholder]admin:label.password_pla">
+                            </div>
+                            <br>
+                            <p class="text-center">
+                                <button type="submit" class="btn btn-lg btn-primary"><i class="fa fa-sign-in"></i> <span data-i18n="admin:button.signin">Login</span></button><br>
+                            </p>
+                            <div class="text-center"><a href="#" onclick="$('#mdForgot').modal('show')" data-i18n="admin:label.forgot">Esqueceu sua senha?</a></div>
+                        </form>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="hidden-on hidden-xs hidden-md hidden-sm" style="height: 100px"></div>
+                        <h4 class="text-center" data-i18n="admin:label.noaccount">Não possue uma conta?</h4>
+                        <p class="text-center">
+                            <button type="button" class="btn btn-lg btn-success" onclick="$('#mdRegister').modal('show');
+                                    $('#textName').focus()"><i class="fa fa-user"></i> <span data-i18n="admin:button.register">Registrar nova conta</span></button><br>
+                        </p>
+                        <p class="text-center"><a href="#" onclick="$('#mdResend').modal('show');
+                                $('#textEmailRe').focus()" data-i18n="admin:button.resend">Reenviar link de confirmação</a></p>
+                    </div>
+                </div>
+                <div class="modal" id="mdForgot">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title" data-i18n="admin:label.forgot">Esqueci minha senha</h4>
+                            </div>
+                            <form name="FrmForgot" id="FrmForgot" role="form" onsubmit="user.forgot(event);" autocomplete="off">
+                                <div class="modal-body">
+                                    <fieldset>
+                                        <div class="form-group">
+                                            <label for="textEmailRe"><span data-i18n="user:label.email">E-mail</span>:</label>
+                                            <input type="email" name="email" id="textEmailRe" required="required" class="form-control">
+                                        </div>
+                                    </fieldset>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger" onclick="$('#mdForgot').modal('hide')"><i class="fa fa-times"></i> <span data-i18n="mycookie:button.cancel">Cancelar</span></button>
+                                    <button type="submit" class="btn btn-success"><i class="fa fa-mail-forward"></i> <span data-i18n="admin:forgot.button">Restaurar minha senha</span></button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal" id="mdRegister">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title" data-i18n="admin:register.title">Registrar nova conta</h4>
+                            </div>
+                            <form name="FrmEdit" id="FrmEdit" role="form" autocomplete="off" onsubmit="return user.savePublic(event)">
+                                <div class="modal-body">
+                                    <fieldset>
+                                        <div class="form-group">
+                                            <label for="textName"><span>Nome completo</span>:</label>
+                                            <input type="text" required="required" name="name" id="textName" class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="textEmail"><span data-i18n="user:label.email">E-mail</span>:</label>
+                                            <input type="email" name="email" id="textEmail" required="required" class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="textPassword"><span data-i18n="user:label.password">Senha</span>:</label> (<span data-i18n="user:message.pwd_minimum">minimum of 6 characters</span>)
+                                            <input required="required" pattern=".{6,32}" onchange="$('#textPasswordRepeat').attr('pattern', this.value)" type="password" name="newPassword" id="textPassword" class="form-control" value="">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="textPasswordRepeat"><span data-i18n="user:label.repeat_pwd">Repitaa a senha</span>:</label>
+                                            <input required="required" pattern="" type="password" name="passwordRepeat" id="textPasswordRepeat" class="form-control">
+                                        </div>
+                                    </fieldset>
+                                    <input type="hidden" name="id" value="">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger" onclick="$('#FrmEdit')[0].reset();
+                                            $('#mdRegister').modal('hide')"><i class="fa fa-times"></i> <span data-i18n="mycookie:button.cancel">Cancelar</span></button>
+                                    <button type="submit" class="btn btn-success"><i class="fa fa-sign-in"></i> <span data-i18n="admin:register.button">Registrar</span></button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal" id="mdResend">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title" data-i18n="admin:resend.title">Reenviar link de confirmação</h4>
+                            </div>
+                            <form name="FrmResend" id="FrmResend" role="form" onsubmit="user.resend(event);">
+                                <div class="modal-body">
+                                    <fieldset>
+                                        <div class="form-group">
+                                            <label for="textEmailRe"><span data-i18n="user:label.email">E-mail</span>:</label>
+                                            <input type="email" name="email" id="textEmailRe" required="required" class="form-control">
+                                        </div>
+                                    </fieldset>
+                                    <p data-i18n="admin:resend.spam">Se você não recebeu o link de confirmação, por favor, cheque sua caixa de spam.</p>
+                                    <input type="submit" style="position: absolute; visibility: hidden">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger" onclick="$('#mdResend').modal('hide')"><i class="fa fa-times"></i> <span data-i18n="mycookie:button.cancel">Cancel</span></button>
+                                    <button type="submit" class="btn btn-success"><i class="fa fa-mail-forward"></i> <span data-i18n="admin:resend.button">Resend</span></button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <script type="text/javascript">
+                    require(['user_user'], function (user) {
+                    });
+                </script>            </div>
+        </div>
+        {% load static %}
+        <script type="text/javascript" src="{% static "js/bundle.js" %}"></script>        <script type="text/javascript">
+                    require(['jquery', 'i18next', 'webshim'], function ($) {
+                        webshim.polyfill('forms forms-ext');
+                        $('#email').focus();
+                    });
+        </script>
+    </body>
+</html>
