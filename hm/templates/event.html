@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+
+{% block content %}
+        <section id="main" class="container-fluid">
+            <div class="row">
+                <div class="col-md-12 text-right">
+                    <form id="FrmSearch" class="form-inline">
+                        <a class="btn btn-default" href="http://localhost/mercurio/administrator/event/organization/manage/">
+                            <i class="fa fa-gear"></i> <span data-i18n="event:label.organizations"></span>
+                        </a>
+                        <input type="search" name="q" required="required" class="form-control" value="" data-i18n="[placeholder]mycookie:message.search_pla">
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> <span data-i18n="mycookie:button.search"></span></button>
+                    </form>
+                </div>
+            </div>
+            <div id="lstData" class="row">
+                <div class="col-md-12">
+
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th data-i18n="event:label.name"></th>
+                                <th data-i18n="event:label.organization"></th>
+                                <th data-i18n="event:label.starts"></th>
+                                <th data-i18n="event:label.ends"></th>
+                                <th data-i18n="event:label.registred_activities"></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <a href="event_view.html">VI CONPEX</a>
+                                </td>
+                                <td>IFRO Campus Ariquemes</td>
+                                <td>21/11/2018</td>
+                                <td>23/11/2018</td>
+                                <td>1</td>
+                                <td class="text-right">
+                                    <a href="event_view.html" class="btn btn-default hidden-sm hidden-xs">
+                                        <i class="fa fa-pencil"></i>
+                                    </a>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                    <div class="modal fade" id="mensagem" tabindex="-1" role="dialog">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title">Enviar mensagem para inscritos</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="FrmMensagem">
+                                        <textarea id="pMensagem" name="mensagem" class="form-control"></textarea>
+                                        <input type="hidden" name="eventId" id="eventId">
+                                        <input type="hidden" name="async" value="true">
+                                    </form>
+                                    <a href="http://localhost/mercurio/event/loadEmails/?async&eventId=1" target="_blank">Carregar lista de e-mails (para envio externo ao sistema)</a>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" onclick="enviarMensagem()">Enviar</button>
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal -->
+                    <script>
+                        require(['jquery', 'summernote'], function ($) {
+                            $('#pMensagem').summernote({height: 200});
+                            $('#carregandoEmails').hide();
+                        });
+
+                        function enviarMensagem() {
+                            MyCookieJS.showWaitMessage('Enviando e-mails (isso pode demorar muitos minutos)');
+                            $.ajax({
+                                type: 'POST',
+                                url: 'http://localhost/mercurio/event/sendMessage/?async',
+                                data: $('#FrmMensagem').serialize(),
+                                success: function (msg) {
+                                    if (msg === '') {
+                                        MyCookieJS.alert('Mensagem enviada com sucesso!', function () {
+                                            location.reload();
+                                        });
+                                    } else {
+                                        MyCookieJS.alert(msg, function () {
+                                            MyCookieJS.closeWaitMessage();
+                                            MyCookieJS.closeAllPopups();
+                                        });
+                                    }
+                                }
+                            });
+                        }
+                    </script>
+                    <div class="clear"></div>
+                </div>
+                <div class="col-md-12 text-center">
+                    <nav>
+                        <ul class="pagination">
+                            <li class="disabled">
+                                <a href="" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <li class="active">
+                                <a href="?page=1">1</a>
+                            </li>
+
+                            <li class="disabled">
+                                <a href="" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>    </div>
+            </div>
+
+            <nav id="admin-navbar" class="navbar navbar-default navbar-fixed-bottom" role="navigation">
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="align-center">
+                    <a href="event_edit.html" class="navbar-link">
+                        <i class="fa fa-plus-circle fa-4x"></i>
+                    </a>
+                </div><!-- /.navbar-collapse -->
+            </nav>
+
+            <script>
+                require(['jquery'], function ($) {
+                    $(function () {
+                        $('#textName').focus();
+                    });
+                });
+            </script>            <div class="spacer"></div>
+        </section>
+        <script type="text/javascript" src="js/bundle.js"></script>
+        <script type="text/javascript">
+                require(['jquery', 'webshim'], function ($) {
+                    $(function () {
+                        webshim.polyfill('forms forms-ext');
+                        $('#goBackButton').attr('href', 'http://localhost/mercurio/administrator/');
+                    });
+                });
+        </script>
+
+    </body>
+{% endblock %}

@@ -1,0 +1,119 @@
+<div class="row">            
+    <div class="col-md-12">
+        <form id="FrmActivityEdit" role="form" onsubmit="activity.submit(event)">
+            <div class="form-group">
+                <label for="textName"><span data-i18n="event:activity.label.name">Nome</span>:</label>
+                <input type="text" name="Name" id="textName" class="form-control" value="Hackaton" required="required">
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group" id="typeSelectView">
+                        <label for="selectType"><span data-i18n="event:activity.type.label.type">Tipo</span>:</label><a href="#" onclick="activity_type.manage(event)"><i class="fa fa-gear"></i></a>
+                        <select name="Type" id="selectType" required="required" class="form-control">
+                            <option></option>
+                            <option value="1" selected="selected">PALESTRA</option>
+                        </select>                             </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="textDuration"><span data-i18n="event:activity.label.duration">Duração</span>:</label>
+                        <input type="number" name="Duration" id="textDuration" class="form-control" step="0.5" value="1" required="required">
+                    </div>                                
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="textDescription"><span data-i18n="event:activity.label.description">Descrição</span>:</label>
+                <textarea class="form-control" name="Description" id="textDescription">djaslkdzja</textarea>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="checkCertificate"><span data-i18n="event:activity.label.has_certificate">Terá certificado?</span></label>
+                        <input type="checkbox" name="Certificate" id="checkCertificate" value="true" checked="checked">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="checkSubmissions"><span data-i18n="event:activity.label.has_submissions">Terá submissões?</span></label>
+                        <input type="checkbox" name="Submissions" id="checkSubmissions" value="true">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="textVacancies"><span data-i18n="event:activity.label.vacancies">Vagas</span>:</label>
+                        <input type="number" name="Vacancies" id="textVacancies" class="form-control" value="100">
+                    </div>                                
+                </div>
+            </div>
+
+            <input type="hidden" name="id" id="activityEditId" value="1">
+            <input type="hidden" name="onSession" id="activityEditSession" value="false">
+            <input type="hidden" name="iAct" id="activityEditAct" value="1">
+            <input type="submit" style="position: absolute; display: none">
+        </form>
+    </div>
+    <div class="col-md-12">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title" data-i18n="event:activity.label.speakers">Ministrantes</h3>
+            </div>
+            <div class="panel-body">     
+                <form id="FrmSpk" onsubmit="activity.addSpeaker(event)">
+                    <table class="table table-striped table-condensed">
+                        <thead>
+                            <tr>
+                                <th data-i18n="event:activity.label.speakers_name">Nome</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="lstSpeakers">
+                            <tr>
+                                <td><input type="hidden" name="Speakers[]" value="JESUS">JESUS</td>
+                                <td><button type="button" onclick="$(this).parent().parent().remove()" class="btn btn-danger"><i class="fa fa-trash-o"></i></button></td>
+                            </tr>                            </tbody>
+                        <tfoot>
+                            <tr>
+                                <td><input required="required" type="text" name="spkName" id="spkName" value="" class="form-control"></td>
+                                <td class="col-md-1"><button type="submit" class="btn btn-success"><i class="fa fa-plus"></i></button></td>
+                            </tr>
+                        </tfoot>
+                    </table>     
+                </form>
+            </div>
+        </div>
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title" data-i18n="event:activity.label.sessions">Sessões</h3>
+            </div>
+            <div class="panel-body">        
+                <form id="FrmSes" onsubmit="activity.addSession(event)">
+                    <table class="table table-striped table-condensed">
+                        <thead>
+                            <tr>
+                                <th data-i18n="event:activity.label.session_date">Data</th>
+                                <th data-i18n="event:activity.label.session_start">Começa às</th>
+                                <th data-i18n="event:activity.label.session_end">Termina às</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="lstSessions">
+                            <tr>
+                                <td><input type="hidden" name="Sessions[date][]" value="2018-11-21">21/11/2018</td>
+                                <td><input type="hidden" name="Sessions[start][]" value="00:00">00:00</td>
+                                <td><input type="hidden" name="Sessions[end][]" value="01:00">01:00</td>
+                                <td><button type="button" onclick="$(this).parent().parent().remove()" class="btn btn-danger"><i class="fa fa-trash-o"></i></button></td>
+                            </tr>                            </tbody>
+                        <tfoot>
+                            <tr>
+                                <td><input type="date" name="sesDate" required="required" id="sesDate" value="" class="form-control"></td>
+                                <td><input type="time" name="sesStart" required="required" id="sesStart" value="" class="form-control"></td>
+                                <td><input type="time" name="sesEnd" required="required" id="sesEnd" value="" class="form-control"></td>                                    
+                                <td class="col-md-1"><button type="submit" class="btn btn-success"><i class="fa fa-plus"></i></button></td>
+                            </tr>
+                        </tfoot>
+                    </table>                                
+                </form>
+            </div>
+        </div>
+    </div> 
+</div>

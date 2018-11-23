@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section id="main" class="container-fluid">
+
+    <h1>VI CONPEX</h1>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 data-i18n="event:register.label.information"></h4>
+                </div>
+                <div class="panel-body">
+                    <form id="FrmEventInfo">
+                        <fieldset>
+                            <div class="form-group col-md-3">
+                                <label for="selectOrganization"><span data-i18n="event:label.organization"></span>:</label>
+                                <br>IFRO Campus Ariquemes                        </div>
+                            <div class="form-group col-md-3">
+                                <label for="dateStart"><span data-i18n="event:label.starts"></span>:</label>
+                                <br>21/11/2018                        </div>
+                            <div class="form-group col-md-3">
+                                <label for="dateEnd"><span data-i18n="event:label.ends"></span>:</label>
+                                <br>23/11/2018                        </div>
+                            <div class="form-group col-md-3">
+                                <label for="dateEnd"><span data-i18n="event:label.registred_activities"></span>:</label>
+                                <br>1                        </div>
+                        </fieldset>
+                        <input type="hidden" name="id" value="1">
+                    </form>
+                </div>
+            </div>
+            <div id="admin-tile-section">
+                <a class="thumbnail tile fa-links tile-yellow tile-double" href="accreditation.html">
+                    <h1>Credenciamento</h1>
+                    <i class="fa-3x fa fa-star"></i>
+                </a>
+                <a class="thumbnail tile fa-links tile-yellow tile-double" href="frequency.html">
+                    <h1>Frequência</h1>
+                    <i class="fa-3x fa fa-clock-o"></i>
+                </a>
+                <a class="thumbnail tile fa-links tile-blue" href="event_edit.html">
+                    <h1>Editar</h1>
+                    <i class="fa fa-3x fa-pencil"></i>
+                </a>
+                <a class="thumbnail tile fa-links tile-blue tile-auto" onclick="$('#eventId').val(1)" data-toggle="modal" data-target="#mensagem">
+                    <h1>Enviar mensagem</h1>
+                    <i class="fa fa-3x fa-comment"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="gerar-cert" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Gerar certificados</h4>
+                </div>
+                <form role="form" onsubmit="gerarCertificado()">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="textLivro">Livro para registro:</label>
+                                    <input type="text" required="required" name="Livro" id="textLivro" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="textFolha">Última folha utilizada:</label>
+                                    <input type="number" required="required" name="Folha" id="textFolha" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="textRegistro">Último registro utilizado:</label>
+                                    <input type="number" required="required" name="Registro" id="textRegistro" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="selectCertificado">Tipo de certificado:</label>
+                                    <select name="Certificado" id="selectCertificado" class="form-control">
+                                        <option>Participante</option>
+                                        <option>Ministrante</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-success">Gerar</button>
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <div class="modal fade" id="mensagem" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="tr                                        ue">&times;</span></button>
+                    <h4 cla                                    ss="modal-title">Enviar mensagem para                                        inscritos</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="FrmMensagem">
+                        <textarea id="pMensagem" name=                                                                "mensagem" class="form-control"></textarea>
+                        <input                                                                type="hidden" name="eventId" id="eventId">
+                        <input type="hidden" name="async" value="true">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type                                                        ="button" class="btn btn-primary" oncli                                                    ck="enviarMensagem()">Enviar</butt                                                on>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    <script>
+        require(['jquery', 'summernote'], function ($) {
+            $('#pMensagem').summernote({height: 200});
+            $('#carregandoEmails').hide();
+        });
+
+        function enviarMensagem() {
+            MyCookieJS.showWaitMessage('Enviando e-mails (isso pode demorar muitos minutos)');
+            $.ajax({
+                type: 'POST',
+                url: 'http://localhost/mercurio/event/sendMessage/?async',
+                data: $('#FrmMensagem').serialize(),
+                success: function (msg) {
+                    if (msg === '') {
+                        MyCookieJS.alert('Mensagem enviada com sucesso!', function () {
+                            location.reload();
+                        });
+                    } else {
+                        MyCookieJS.alert(msg, function () {
+                            MyCookieJS.closeWaitMessage();
+                            MyCookieJS.closeAllPopups();
+                        });
+                    }
+                }
+            });
+        }
+
+        function gerarCertificado() {
+            MyCookieJS.showWaitMessage('Gerando certificados (isso pode demorar muitos minutos)');
+            theUrl = ($('#selectCertificado').val() == 'Participante') ?
+                    'http://localhost/mercurio/administrator/event/printCertificates/1/?async' : 'http://localhost/mercurio/administrator/event/printSpeakerCertificates/1/?async';
+            $.ajax({
+                type: 'POST',
+                url: theUrl,
+                data: $('#FrmCert').serialize(),
+                success: function (msg) {
+                    if (msg === '') {
+                        MyCookieJS.alert('Certificados gerados com sucesso!', function () {
+                            location.reload();
+                        });
+                    } else {
+                        MyCookieJS.alert(msg, function () {
+                            MyCookieJS.closeWaitMessage();
+                            MyCookieJS.closeAllPopups();
+                        });
+                    }
+                }
+            });
+        }
+    </script>            <div class="spacer"></div>
+</section>
+<script type="text/javascript" src="js/bundle.js"></script>
+{% endblock %}

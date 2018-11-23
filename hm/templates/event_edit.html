@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+        <section id="main" class="container-fluid">
+
+            <header class="row">
+                <div class="col-md-12"><h2 data-i18n="event:label.edit_event"></h2></div>
+            </header>
+            <div class="row" id="scr-1">
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <form name="FrmEventEdit" id="FrmEventEdit" role="form" onsubmit="evt.next(event);">
+                                <fieldset>
+                                    <div class="form-group">
+                                        <label for="textName"><span data-i18n="event:label.name"></span>:</label>
+                                        <input type="text" required="required" name="Name" id="textName" class="form-control" value="VI CONPEX">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="selectOrganization"><span data-i18n="event:label.organization"></span>:</label>
+                                        <select name="organization" id="selectOrganization" required="required" class="form-control">
+                                            <option></option>
+                                            <option value="1" selected="selected">IFRO Campus Ariquemes</option>
+                                        </select>                        </div>
+                                    <div class="form-group">
+                                        <label for="textDescription"><span data-i18n="event:label.description"></span>:</label>
+                                        <textarea id="textDescription" name="Description" class="form-control" required><p>Dasdjakosjdlkasd</p></textarea>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="dateStart"><span data-i18n="event:label.starts"></span>:</label>
+                                                <input type="date" required="required" name="StartDate" id="dateStart" class="form-control" value="2018-11-21">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="dateEnd"><span data-i18n="event:label.ends"></span>:</label>
+                                                <input type="date" required="required" name="EndDate" id="dateEnd" class="form-control" value="2018-11-23">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="textAddress"><span data-i18n="event:label.address"></span>:</label>
+                                                <input type="text" required="required" name="Address" id="textAddress" class="form-control" value="Zona Norte">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="checkOpen"><span data-i18n="event:label.is_open"></span>:</label>
+                                                <input type="checkbox" name="IsOpen" id="checkOpen" value="true" checked="checked">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="checkOpen"><span data-i18n="event:label.is_registration_open"></span>:</label>
+                                                <input type="checkbox" name="IsRegistrationOpen" id="checkRegistrationOpen" value="true" >
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <input type="hidden" name="id" value="1">
+                                <input type="submit" style="position: absolute; visibility: hidden">
+                            </form>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <a href="#" onclick="evt.delete(event)" data-i18n="event:button.delete"></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" style="display: none" id="scr-2">
+                <div class="col-md-12">
+                    <h3 id="lbEventName">{Event name}</h3>
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Activities</h3>
+                        </div>
+                        <div class="panel-body">
+                            <form name="FrmActivities" id="FrmActivities">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th data-i18n="event:activity.label.name"></th>
+                                            <th data-i18n="event:activity.type.label.type"></th>
+                                            <th data-i18n="event:activity.label.duration"></th>
+                                            <th data-i18n="event:activity.label.speakers"></th>
+                                            <th data-i18n="event:activity.label.has_certificate"></th>
+                                            <th data-i18n="event:activity.label.has_submissions"></th>
+                                            <th data-i18n="event:activity.label.vacancies"></th>
+                                            <th data-i18n="event:activity.label.subscriptions"></th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="lstActivities">
+                                        <tr data-id="1">
+                                            <td><input type="hidden" name="Activity[1][Name]" value="Hackaton"><span>Hackaton</span></td>
+                                            <td><input type="hidden" name="Activity[1][Type]" value="1"><span>PALESTRA</span></td>
+                                            <td><input type="hidden" name="Activity[1][Duration]" value="1"><span>1</span></td>
+                                            <td>
+                                                <input type="hidden" name="Activity[1][Speakers][0]" value="JESUS">JESUS<br>
+                                            </td>
+                                            <td class="text-center">
+                                                <input type="hidden" name="Activity[1][HasCertificate]" value="true"><i class="fa fa-check text-success"></i>
+                                            </td>
+                                            <td class="text-center">
+                                                <input type="hidden" name="Activity[1][HasSubmissions]" value="false"><i class="fa fa-times text-danger"></i>
+                                            </td>
+                                            <td><input type="hidden" name="Activity[1][Vacancies]" value="100"><span>100</span></td>
+                                            <td>0</td>
+                                            <td class="text-right">
+                                                <input type="hidden" name="Activity[1][Sessions][0][date]" value="2018-11-21">
+                                                <input type="hidden" name="Activity[1][Sessions][0][start]" value="00:00">
+                                                <input type="hidden" name="Activity[1][Sessions][0][end]" value="01:00">
+                                                <input type="hidden" name="Activity[1][Id]" value="1">
+                                                <input type="hidden" name="Activity[1][Description]" value="djaslkdzja">
+                                                <button type="button" class="btn btn-default" data-i18n="[title]event:activity.button.presence_confirmation"><i class="fa fa-users"></i></button>
+                                                <button type="button" data-i18n="[title]mycookie:button.edit" class="btn btn-default" onclick="activity.edit('1', false)"><i class="fa fa-edit"></i></button>
+                                            </td>
+                                        </tr>                        </tbody>
+                                </table>
+                            </form>
+                        </div>
+                    </div>
+                    <p class="text-right"><button class="btn btn-primary" onclick="activity.add()"><i class="fa fa-plus-circle"></i> <span data-i18n="event:activity.button.add_activity">Add activity</span></button></p>
+                </div>
+            </div>
+            <nav id="admin-navbar" class="navbar navbar-default navbar-fixed-bottom" role="navigation">
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="align-center">
+                    <div class="scr-1">
+                        <a href="#" class="navbar-link" data-i18n="[title]event:button.next" onclick="evt.next(event)">
+                            <i class="fa fa-arrow-circle-o-right fa-4x"></i>
+                        </a>
+                    </div>
+                    <div class="scr-2 hidden">
+                        <a href="#" class="navbar-link" data-i18n="[title]event:button.previous" onclick="evt.previous(event)">
+                            <i class="fa fa-arrow-circle-o-left fa-4x"></i>
+                        </a> &nbsp;&nbsp;&nbsp;
+                        <a href="#" class="navbar-link" data-i18n="[title]event:button.save" onclick="evt.submit(event)">
+                            <i class="fa fa-save fa-4x"></i>
+                        </a>
+                    </div>
+                </div><!-- /.navbar-collapse -->
+            </nav>
+
+            <script type="text/javascript">
+                require(['jquery', 'summernote'], function ($) {
+                    $(function () {
+                        $('#textName').focus();
+                        $('#textDescription').summernote({height: 200});
+                    });
+                });
+            </script>            <div class="spacer"></div>
+        </section>
+        <script type="text/javascript" src="js/bundle.js"></script>
+        <script type="text/javascript">
+                require(['jquery', 'webshim'], function ($) {
+                    $(function () {
+                        webshim.polyfill('forms forms-ext');
+                        $('#goBackButton').attr('href', 'event_view.html');
+                    });
+                });
+        </script>
+
+    </body>
+    {% endblock %}

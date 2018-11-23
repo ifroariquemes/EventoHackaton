@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+        <section id="main" class="container-fluid">
+            <aside id="speed-dial">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div id="admin-tile-section">
+
+
+                            <a class="thumbnail tile fa-links tile-yellow " href="event.html">
+                                <h1>Eventos</h1>
+                                <i class="fa fa-3x fa-paperclip"></i>
+                            </a>
+
+
+                            <a class="thumbnail tile fa-links tile-blue tile-double" href="organizations.html">
+                                <h1>Organizações</h1>
+                                <i class="fa fa-3x fa-gear"></i>
+                            </a>
+
+
+                            <a class="thumbnail tile fa-links tile-concrete tile-double" href="user.html">
+                                <h1>Usuários</h1>
+                                <i class="fa fa-3x fa-user"></i>
+                            </a>
+
+                        </div>
+                    </div>
+                </div></aside>            <div class="spacer"></div>
+        </section>
+        <footer id="admin-footer">
+            <hr />
+            <p class="align-center">
+                <strong>Copyright &copy; 2014 - 2016 IFRO</strong><br>
+                <span data-i18n="admin:footer.institute">Federal Institute of Rondônia</span><br>
+                <i>Campus Ariquemes</i>
+            </p>
+        </footer>
+        <script type="text/javascript" src="js/bundle.js"></script>
+
+    </body>
+    {% endblock %}
